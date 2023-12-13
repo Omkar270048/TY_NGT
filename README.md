@@ -1,5 +1,105 @@
 # TY_NGT
 
+## 1. MongoDB Basics <Br>
+1.a Write a MongoDB query to create and drop database. <br>
+create db
+```js
+use college
+```
+drop database
+```js
+db
+db.dropDatabase()
+```
+
+1.b create collection, show, drop collection
+```js
+db.createCollection('student')
+show collections
+db.student.drop()
+```
+
+1.c Write a MongoDB query to insert, query, update and delete a document.
+insertOne()
+```js
+db.students.insertOne({
+  "name": "John Doe",
+  "rollno": "C101"
+})
+```
+insertMany()
+```js
+db.students.insertMany([
+  {
+    "name": "Jane Smith",
+    "rollno": "C102"
+  },
+  {
+    "name": "Bob Johnson",
+    "rollno": "C103"
+  }
+])
+```
+ updateOne
+ ```js
+db.students.updateOne(
+  { "rollno": "C101" },
+  { $set: { "contact": "123-456-7890" } }
+)
+```
+updateMany
+```js
+db.students.updateMany(
+  { "class": "10th" },
+  { $set: { "contact": "N/A" } }
+)
+```
+deleteOne
+```js
+db.students.deleteOne({ "rollno": "C101" })
+```
+deleteMany
+```js
+db.students.deleteMany({ "class": "10th" })
+```
+
+## 2. Simple Queries with MongoDB
+step 1: open cmd from below path
+```
+c:\Program Files\MongoDB\Tools\100\bin
+```
+step 2: import csv
+```js
+mongoimport --db college --collection student1 --type csv --file [csv file location] --headerline
+```
+step 3: find()
+```js
+db.student1.find({}, {FName:1, Age:1, Score:1})
+```
+```js
+db.student1.find({Gender:"Female"}, {FName:1, Age:1}).pretty()
+```
+```js
+db.student1.find({Age:{$gt:25}}).pretty()
+```
+Display first 6 records of male students
+```js
+db.student1.find({Gender:"Male"}).limit(6)
+```
+Display record of female students whose score is more than 60
+```js
+db.student1.find({$and:[{Gender:"Female"}, {Score:{$gt}}]})
+```
+## Implementing Aggregation
+
+
+
+
+
+
+
+
+
 ## 7. Python and MongoDB
 Connecting Python with MongoDB and inserting, retrieving, updating and
 deleting.
@@ -436,56 +536,3 @@ loaded_data["city"] = "San Francisco"
 with open("example.json", "w") as json_file:
     json.dump(loaded_data, json_file, indent=4)
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
