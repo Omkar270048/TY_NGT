@@ -90,15 +90,68 @@ Display record of female students whose score is more than 60
 ```js
 db.student1.find({$and:[{Gender:"Female"}, {Score:{$gt}}]})
 ```
-## Implementing Aggregation
+## 3. Implementing Aggregation
+3.a Write a MongoDB query to use sum, avg, min and max expression.<br>
+sum 
+```js
+db.student1.aggregate([{$group:{_id:"$GENDER", totalscore:{$sum:"$SCORE"}}}])
+```
+min
+```js
+db.student1.aggregate([{$group:{_id:"$GENDER", minscore:{$min:"$SCORE"}}}])
+```
+max
+```js
+db.student1.aggregate([{$group:{_id:"$GENDER", maxscore:{$max:"$SCORE"}}}])
+```
+avg or average
+```js
+db.student1.aggregate([{$group:{_id:"$GENDER", avgscore:{$avg:"$SCORE"}}}])
+```
+match
+```js
+db.student1.aggregate([{$match:{GENDER:"Female"}},{$group:{_id:"$GENDER",minage:{$min:
+"$AGE"}}}])
+```
+3.b Write a MongoDB query to use push and addToSet expression.<br>
+3.b.1 insert whole thing as array
+```js
+db.student1.update({"FNAME":"Dave"},{$push:{"language":["mongoDB","Java"]}})
+```
+3.b.2 treat each element individually.
+```js
+db.student1.update({"FNAME":"Rose"},{$push:{"language":{$each:["C","C++","python"]}}})
+```
+
+3.b.3 same as push.. check before inserting.. didn’t insert if already exists.
+```js
+db.student1.update({"FNAME":"Rose"},{$addToSet:{"language":{$each:[".NET"]}}})
+```
+
+3.c Write a MongoDB query to use first and last expression.
+ ```js
+
+```
 
 
+## 4. Replication, Backup and Restore
+4.b Backup
+```js
+mongodump --host <your_host> --port <your_port> --username <your_username> --password <your_password> --out <backup_directory>
+```
+example
+```js
+mongodump --host localhost --port 27017 --username myuser --password mypassword --out /path/to/backup_directory
+```
 
-
-
-
-
-
+4.c restore
+```js
+mongorestore --host <your_host> --port <your_port> --username <your_username> --password <your_password> --drop --dir <backup_directory>
+```
+example
+```js
+mongorestore --host localhost --port 27017 --username myuser --password mypassword --drop --dir /path/to/backup_directory
+```
 
 ## 7. Python and MongoDB
 Connecting Python with MongoDB and inserting, retrieving, updating and
@@ -536,3 +589,14 @@ loaded_data["city"] = "San Francisco"
 with open("example.json", "w") as json_file:
     json.dump(loaded_data, json_file, indent=4)
 ```
+
+## 11. Create a JSON file and import it to MongoDB
+11.a Export MongoDB to JSON.
+```js
+mongoexport --host <your_host> --port <your_port> --username <your_username> --password <your_password> --db <your_database> --collection <your_collection> --out <output_file.json>
+```
+example
+```js
+mongoexport --host localhost --port 27017 --username myuser --password mypassword --db mydatabase --collection mycollection --out /path/to/output_file.json
+```
+
